@@ -1,3 +1,4 @@
+from src.domain.DatosSolicitud import DatosSolicitud
 from src.domain.Estudiante import Estudiante
 from src.domain.Responsable import Responsable
 from src.domain.Solicitud import Solicitud
@@ -8,9 +9,12 @@ class SolicitudService:
     def __init__(self, repository: SolicitudRepositoryBase):
         self._repository = repository
 
-    def registrar_solicitud(self, id_solicitud: int, estudiante: Estudiante, tipo: str, descripcion: str) -> None:
-        nueva_solicitud = Solicitud(id_solicitud, estudiante, tipo, descripcion)
+    def registrar_solicitud(self, datos: DatosSolicitud) -> int:
+        nuevo_id = len(self._repository.obtener_todas()) + 1
+        estudiante = Estudiante(datos.legajo, datos.nombre)
+        nueva_solicitud = Solicitud(nuevo_id, estudiante, datos.tipo, datos.descripcion)
         self._repository.guardar(nueva_solicitud)
+        return nuevo_id
 
     def obtener_solicitudes(self) -> list[Solicitud]:
         return self._repository.obtener_todas()

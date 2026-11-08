@@ -3,6 +3,6 @@ from enum import Enum
 
 class EstadoSolicitud(Enum):
     PENDIENTE = "Pendiente"
-    APROBADO = "Aprobado"
-    RECHAZADO = "Rechazado"
+    APROBADA = "Aprobada"
+    RECHAZADA = "Rechazada"
     EN_PROCESO = "En Proceso"
