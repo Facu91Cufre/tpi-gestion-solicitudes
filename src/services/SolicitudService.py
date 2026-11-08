@@ -27,7 +27,10 @@ class SolicitudService:
         print(f"nuevo estado: {nuevo_estado}")
 
     def buscar_solicitud_por_id(self, id_solicitud: int) -> Solicitud | None:
-        return self._repository.buscar_por_id(id_solicitud)
+        solicitud = self._repository.buscar_por_id(id_solicitud)
+        if not solicitud:
+            raise ValueError(f"No se encontró solicitud con el ID {id_solicitud}")
+        return solicitud
 
     def asignar_responsable_a_solicitud(self, id_solicitud: int, responsable: Responsable) -> None:
         solicitud = self._repository.buscar_por_id(id_solicitud)

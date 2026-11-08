@@ -34,8 +34,10 @@ def iniciar_menu(service):
 
 
 def pedir_id(mensaje: str) -> int:
-    return int(input(mensaje))
-
+    try:
+        return int(input(mensaje))
+    except ValueError:
+        raise ValueError("El ID debe ser un número entero.")
 
 def formatear_solicitud(s) -> str:
     return f"ID: {s.id_solicitud}, Estudiante: {s.estudiante.nombre}, Tipo: {s.tipo}, Estado: {s.estado}"
@@ -59,6 +61,7 @@ def cambiar_estado(service):
     print("Cambiar estado de solicitud")
     try:
         id_solicitud = pedir_id("Ingrese el ID de la solicitud: ")
+        service.buscar_solicitud_por_id(id_solicitud)
         print("Estados válidos: PENDIENTE, EN_PROCESO, APROBADA, RECHAZADA")
         nuevo_estado = input("Ingrese el nuevo estado (Pendiente, En Proceso, Aprobada, Rechazada): ").strip()
         service.actualizar_estado_solicitud(id_solicitud, nuevo_estado)
@@ -82,12 +85,9 @@ def buscar_solicitud(service):
     try:
         id_solicitud = pedir_id("Ingrese el ID de la solicitud a buscar: ")
         solicitud = service.buscar_solicitud_por_id(id_solicitud)
-        if solicitud:
-            print(f"Solicitud encontrada: {formatear_solicitud(solicitud)}")
-        else:
-            print("Solicitud no encontrada.")
-    except ValueError:
-        print("Error: El ID debe ser un número.")
+        print(f"Solicitud encontrada: {formatear_solicitud(solicitud)}")
+    except ValueError as e:
+        print(f"Solicitud no encontrada o ID inválido: {e}")
 
 def listar_solicitudes(service):
     print("Listado de solicitudes")
